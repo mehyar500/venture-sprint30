@@ -87,7 +87,7 @@ footer a:hover{color:var(--text)}
   var token = new URLSearchParams(window.location.search).get("token");
   if (token && /^[0-9a-f]{32,128}$/i.test(token)) {
     document.getElementById("ok").hidden = false;
-    var dash = "dashboard.html?token=" + encodeURIComponent(token);
+    var dash = "dashboard?token=" + encodeURIComponent(token);
     document.getElementById("dash-link").href = dash;
     var box = document.getElementById("token-box");
     box.hidden = false;

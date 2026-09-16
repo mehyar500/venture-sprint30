@@ -1,7 +1,8 @@
 # Sprint30 Pages project config.
-# NOTE: deploys go through the Cloudflare Pages GitHub integration (never
-# `wrangler pages deploy` from a directory with [vars] — see AGENTS.md).
-# D1 + AI bindings are attached at the Pages project level in the dashboard;
+# Deploys go through ~/workspace/sprint30/deploy.py (direct `wrangler pages
+# deploy`; the Cloudflare GitHub App install is blocked by error 8000011).
+# NEVER `wrangler pages deploy` from a directory with [vars] — see AGENTS.md.
+# D1 + AI bindings are declared here AND attached at the Pages project level;
 # this file documents the intended bindings.
 
 name = "sprint30"
