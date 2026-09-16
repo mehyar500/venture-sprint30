@@ -6,6 +6,7 @@
 
 name = "sprint30"
 compatibility_date = "2026-09-01"
+pages_build_output_dir = "public"
 
 [build]
 command = ""
