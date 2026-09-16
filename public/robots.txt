@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /$
+Disallow: /dashboard.html
+Disallow: /success.html
+Disallow: /api/
