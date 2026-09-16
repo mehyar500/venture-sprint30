@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sprint30 — My dashboard</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="assets/sprint30-logo.png">
+<meta name="theme-color" content="#a3e635">
+<style>
+:root{
+  --bg:#0c0e12; --surface:#14181f; --line:#262d38;
+  --text:#f2f4f7; --muted:#9aa4b2;
+  --accent:#a3e635; --accent-soft:rgba(163,230,53,.14);
+  --err:#ff6b6b; --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
+header.site{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(12,14,18,.92);backdrop-filter:blur(10px);z-index:50}
+header.site .inner{max-width:720px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:800;font-size:20px;letter-spacing:-.5px}
+.brand img{width:32px;height:32px;border-radius:8px}
+.brand span{color:var(--accent)}
+main{padding:32px 0 64px}
+h1{font-size:clamp(26px,5vw,36px);letter-spacing:-.5px;font-weight:800}
+.lede{color:var(--muted);margin-top:8px}
+.progress-shell{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.progress-bar{height:10px;border-radius:6px;background:#0c0e12;border:1px solid var(--line);overflow:hidden;margin-top:10px}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .4s}
+.day{border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-top:12px;background:var(--surface)}
+.day.current{border-color:var(--accent)}
+.day.locked{opacity:.55}
+.day-head{display:flex;align-items:center;gap:12px}
+.day-num{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent)}
+.day h3{flex:1;font-size:17px}
+.done-toggle{flex:none;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);cursor:pointer;user-select:none}
+.done-toggle input{width:20px;height:20px;accent-color:var(--accent);cursor:pointer}
+.day.done{border-color:rgba(163,230,53,.5)}
+.day.done h3{text-decoration:line-through;color:var(--muted)}
+.day .body{margin-top:10px;font-size:14px}
+.day .field{margin-top:8px}
+.day .field b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.reply{margin-top:10px;padding:10px 12px;background:var(--accent-soft);border:1px solid rgba(163,230,53,.35);border-radius:10px;font-size:13px}
+.reply b{color:var(--accent)}
+.center{text-align:center;padding:64px 20px}
+.err{color:var(--err)}
+.muted{color:var(--muted)}
+.today-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#0c0e12;background:var(--accent);border-radius:6px;padding:2px 8px;margin-left:8px}
+</style>
+</head>
+<body>
+<header class="site"><div class="inner">
+  <a class="brand" href="index.html"><img src="assets/sprint30-logo.png" alt="Sprint30 logo">Sprint<span>30</span></a>
+</div></header>
+
+<main class="wrap">
+  <div id="loading" class="center"><p class="muted">Loading your sprint…</p></div>
+  <div id="bad-token" class="center" hidden>
+    <h1>That link didn't work.</h1>
+    <p class="lede">This dashboard needs a valid access token. The link in your Day 1 email (and your receipt) opens it directly.</p>
+  </div>
+  <div id="dash" hidden>
+    <h1>Day <span id="cur-day">1</span> of 30 ⚡</h1>
+    <p class="lede" id="dash-sub"></p>
+    <div class="progress-shell">
+      <b><span id="done-count">0</span> of 30 missions done</b>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+    <div id="days"></div>
+  </div>
+</main>
+
+<script>
+(function () {
+  var token = new URLSearchParams(window.location.search).get("token");
+  var loading = document.getElementById("loading");
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  if (!token) { loading.hidden = true; document.getElementById("bad-token").hidden = false; return; }
+
+  var state = { day: 1, progress: {}, missions: [] };
+
+  function render() {
+    var doneCount = Object.keys(state.progress).filter(function (k) { return state.progress[k]; }).length;
+    document.getElementById("cur-day").textContent = state.day;
+    document.getElementById("done-count").textContent = doneCount;
+    document.getElementById("progress-fill").style.width = Math.round(doneCount / 30 * 100) + "%";
+    document.getElementById("dash-sub").textContent =
+      "Missions unlock as the days pass. Check them off as you finish — your streak lives here.";
+    var box = document.getElementById("days");
+    box.innerHTML = "";
+    state.missions.forEach(function (m) {
+      var unlocked = m.day <= state.day;
+      var done = !!state.progress[String(m.day)];
+      var d = document.createElement("div");
+      d.className = "day" + (m.day === state.day ? " current" : "") + (unlocked ? "" : " locked") + (done ? " done" : "");
+      var head = '<div class="day-head">' +
+        '<div><div class="day-num">Day ' + m.day + '</div><h3>' + esc(m.title) +
+        (m.day === state.day ? '<span class="today-tag">today</span>' : '') + "</h3></div>";
+      if (unlocked) {
+        head += '<label class="done-toggle"><input type="checkbox" data-day="' + m.day + '"' +
+          (done ? " checked" : "") + "> done</label>";
+      }
+      head += "</div>";
+      var body = unlocked
+        ? '<div class="body"><p>' + esc(m.mission) + "</p>" +
+          '<div class="field"><b>Do this today</b><p>' + esc(m.doToday) + "</p></div>" +
+          '<div class="reply"><b>↩ Reply prompt:</b> ' + esc(m.replyPrompt) + "</div></div>"
+        : '<div class="body"><p class="muted">🔒 Unlocks on day ' + m.day + ". One mission a day — no skipping ahead.</p></div>";
+      d.innerHTML = head + body;
+      box.appendChild(d);
+    });
+    box.querySelectorAll("input[data-day]").forEach(function (cb) {
+      cb.addEventListener("change", function () { setDone(parseInt(cb.getAttribute("data-day"), 10), cb.checked, cb); });
+    });
+  }
+
+  function setDone(day, done, cb) {
+    cb.disabled = true;
+    fetch("/api/sprint30/progress", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: token, day: day, done: done })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (d && d.progress) { state.progress = d.progress; }
+      render();
+    }).catch(function () { cb.disabled = false; cb.checked = !done; });
+  }
+
+  Promise.all([
+    fetch("/api/sprint30/status?token=" + encodeURIComponent(token)).then(function (r) {
+      if (r.status === 404) { var e = new Error("bad token"); e.badToken = true; throw e; }
+      return r.json();
+    }),
+    fetch("assets/missions.json").then(function (r) { return r.json(); })
+  ]).then(function (res) {
+    var st = res[0], missions = res[1];
+    state.day = st.day; state.progress = st.progress || {}; state.missions = missions;
+    loading.hidden = true;
+    document.getElementById("dash").hidden = false;
+    render();
+  }).catch(function (err) {
+    loading.hidden = true;
+    document.getElementById("bad-token").hidden = false;
+  });
+})();
+</script>
+</body>
+</html>
