@@ -308,7 +308,8 @@ footer a:hover{color:var(--text)}
   function esc(s) {
     return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
-  fetch("assets/missions.json").then(function (r) { return r.json(); }).then(function (missions) {
+  fetch("assets/missions.json").then(function (r) { return r.json(); }).then(function (doc) {
+    var missions = doc.missions || doc;
     var free = document.getElementById("free-days");
     missions.slice(0, 3).forEach(function (m) {
       var d = document.createElement("div");

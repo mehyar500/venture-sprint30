@@ -142,7 +142,7 @@ footer a:hover{color:var(--text)}
     }),
     fetch("assets/missions.json").then(function (r) { return r.json(); })
   ]).then(function (res) {
-    var st = res[0], missions = res[1];
+    var st = res[0], missions = res[1].missions || res[1];
     state.day = st.day; state.progress = st.progress || {}; state.missions = missions;
     loading.hidden = true;
     document.getElementById("dash").hidden = false;
