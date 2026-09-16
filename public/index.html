@@ -22,7 +22,7 @@ html{scroll-behavior:smooth}
 body{
   background:var(--bg); color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
-  font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
 }
 .wrap{max-width:720px;margin:0 auto;padding:0 20px}
 section{padding:56px 0}
@@ -42,7 +42,8 @@ a{color:var(--accent)}
 .nav{margin-left:auto;display:flex;gap:18px;align-items:center}
 .nav a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:600}
 .nav a:hover{color:var(--text)}
-.nav .btn{padding:10px 16px;font-size:14px}
+.nav .btn{padding:12px 18px;font-size:14px;min-height:44px;display:inline-flex;align-items:center}
+@media(max-width:640px){.nav a:not(.btn){display:none}}
 /* buttons */
 .btn{display:inline-block;font-size:16px;font-weight:700;padding:14px 22px;border-radius:10px;border:none;cursor:pointer;text-decoration:none;text-align:center;transition:opacity .15s,transform .05s}
 .btn:active{transform:scale(.98)}
@@ -93,6 +94,13 @@ a{color:var(--accent)}
 .review{margin-bottom:14px}
 .review .who{font-size:13px;color:var(--muted);margin-top:8px}
 .sample-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);border-radius:6px;padding:2px 8px;margin-bottom:8px}
+/* sample deliverable gallery */
+.samples{display:grid;gap:14px;margin-top:20px}
+@media(min-width:640px){.samples{grid-template-columns:repeat(3,1fr)}}
+.sample-shot{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.sample-shot img{width:100%;height:auto;display:block}
+.sample-shot figcaption{padding:12px 14px;font-size:13px;color:var(--muted)}
+.sample-shot .sample-tag{margin:0 8px 0 0}
 /* pricing */
 .price-card{text-align:center;padding:32px 24px}
 .price{font-size:26px;font-weight:800;margin:8px 0}
@@ -181,6 +189,27 @@ footer a:hover{color:var(--text)}
     <h3 style="margin:8px 0 4px">The rest of the sprint</h3>
     <p class="muted small" style="margin-bottom:12px">Mission titles below — the full briefs unlock when you join.</p>
     <div class="locked-grid" id="locked-days"></div>
+  </section>
+
+  <!-- 3b. SAMPLE PAGES -->
+  <section id="samples">
+    <div class="teaser-label">Sample pages</div>
+    <h2>What a mission looks like.</h2>
+    <p class="lede">Days 1–3 are free — these are the real mission pages, rendered exactly as buyers see them. Days 4–30 arrive by email and on your dashboard.</p>
+    <div class="samples" style="margin-top:20px">
+      <figure class="sample-shot">
+        <img src="assets/samples/s30-day1.png" alt="Sample Sprint30 Day 1 mission page: Inventory every skill you have" width="900" height="1165" loading="lazy">
+        <figcaption><span class="sample-tag">Sample</span> Day 1 — Inventory every skill you have</figcaption>
+      </figure>
+      <figure class="sample-shot">
+        <img src="assets/samples/s30-day2.png" alt="Sample Sprint30 Day 2 mission page: Pick one lane, kill the rest" width="900" height="1165" loading="lazy">
+        <figcaption><span class="sample-tag">Sample</span> Day 2 — Pick one lane, kill the rest</figcaption>
+      </figure>
+      <figure class="sample-shot">
+        <img src="assets/samples/s30-day3.png" alt="Sample Sprint30 Day 3 mission page: Name the buyer, not the crowd" width="900" height="1165" loading="lazy">
+        <figcaption><span class="sample-tag">Sample</span> Day 3 — Name the buyer, not the crowd</figcaption>
+      </figure>
+    </div>
   </section>
 
   <!-- 4. THE ARC -->
@@ -308,7 +337,8 @@ footer a:hover{color:var(--text)}
   function esc(s) {
     return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
-  fetch("assets/missions.json").then(function (r) { return r.json(); }).then(function (missions) {
+  fetch("assets/missions.json").then(function (r) { return r.json(); }).then(function (doc) {
+    var missions = doc.missions || doc;
     var free = document.getElementById("free-days");
     missions.slice(0, 3).forEach(function (m) {
       var d = document.createElement("div");
