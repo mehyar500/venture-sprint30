@@ -1,0 +1,20 @@
+# Sprint30 Pages project config.
+# NOTE: deploys go through the Cloudflare Pages GitHub integration (never
+# `wrangler pages deploy` from a directory with [vars] — see AGENTS.md).
+# D1 + AI bindings are attached at the Pages project level in the dashboard;
+# this file documents the intended bindings.
+
+name = "sprint30"
+compatibility_date = "2026-09-01"
+
+[build]
+command = ""
+output_dir = "public"
+
+[[d1_databases]]
+binding = "LEADS_DB"
+database_name = "mehyar_leads_prod"
+database_id = "e4f22065-e3e8-4772-87a8-51d4976be042"
+
+[ai]
+binding = "AI"
