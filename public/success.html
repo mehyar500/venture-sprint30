@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sprint30 — You're in</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://sprint30.mehyar.us/success.html">
+<meta name="description" content="Your Sprint30 order is confirmed. Day 1 is on its way.">
+<link rel="icon" type="image/png" href="assets/sprint30-logo.png">
+<meta name="theme-color" content="#a3e635">
+<style>
+:root{
+  --bg:#0c0e12; --surface:#14181f; --line:#262d38;
+  --text:#f2f4f7; --muted:#9aa4b2;
+  --accent:#a3e635; --accent-soft:rgba(163,230,53,.14);
+  --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
+section{padding:48px 0}
+h1{font-size:clamp(30px,6vw,44px);letter-spacing:-1px;font-weight:800;line-height:1.1}
+.lede{font-size:17px;color:var(--muted);margin-top:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;margin-top:20px}
+.btn{display:inline-block;font-size:16px;font-weight:700;padding:14px 22px;border-radius:10px;border:none;cursor:pointer;text-decoration:none;text-align:center}
+.btn-primary{background:var(--accent);color:#0c0e12}
+.btn-primary:hover{opacity:.92}
+.btn-block{width:100%}
+.check{width:64px;height:64px;border-radius:50%;background:var(--accent);color:#0c0e12;font-size:32px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+ol.steps{list-style:none;margin-top:16px;display:grid;gap:12px}
+ol.steps li{display:flex;gap:14px;align-items:flex-start}
+.step-n{flex:none;width:32px;height:32px;border-radius:50%;background:var(--accent);color:#0c0e12;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px}
+.muted{color:var(--muted)}
+.token-box{margin-top:16px;padding:14px;background:#0c0e12;border:1px dashed var(--line);border-radius:10px;font-size:13px;color:var(--muted);word-break:break-all}
+header.site{border-bottom:1px solid var(--line)}
+header.site .inner{max-width:720px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:800;font-size:20px;letter-spacing:-.5px}
+.brand img{width:32px;height:32px;border-radius:8px}
+.brand span{color:var(--accent)}
+</style>
+</head>
+<body>
+<header class="site"><div class="inner">
+  <a class="brand" href="index.html"><img src="assets/sprint30-logo.png" alt="Sprint30 logo">Sprint<span>30</span></a>
+</div></header>
+
+<main class="wrap">
+  <section id="ok" hidden>
+    <div class="check">✓</div>
+    <h1>You're in. Day 1 is on its way.</h1>
+    <p class="lede">Your receipt is headed to your inbox. Your first mission — <b style="color:var(--text)">Day 1: Inventory every skill you have</b> — lands within minutes.</p>
+    <div class="card">
+      <h3 style="margin-bottom:8px">Your mission control</h3>
+      <p class="muted" style="font-size:14px">Bookmark your personal dashboard — your current day, all 30 missions, and your progress checklist live here.</p>
+      <a class="btn btn-primary btn-block" id="dash-link" href="#" style="margin-top:14px">Open my dashboard</a>
+      <div class="token-box" id="token-box" hidden></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:12px">What happens next</h3>
+      <ol class="steps">
+        <li><div class="step-n">1</div><div><b>Day 1 email arrives today.</b><p class="muted">Mission + reply prompt. Reply with your #1 skill — every reply gets read.</p></div></li>
+        <li><div class="step-n">2</div><div><b>Days 2–30 arrive each morning.</b><p class="muted">One 20-minute mission a day for 30 days.</p></div></li>
+        <li><div class="step-n">3</div><div><b>Check off missions on your dashboard.</b><p class="muted">Watch the streak fill. Day 30 is waiting.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="no-token" hidden>
+    <div class="check" style="background:var(--surface);color:var(--accent);border:1px solid var(--line)">?</div>
+    <h1>No access token found.</h1>
+    <p class="lede">This page needs the token from your checkout. Check your email for the receipt — your dashboard link is in there too. If you just paid and the email hasn't arrived, give it a minute, then check spam.</p>
+    <div class="card">
+      <a class="btn btn-primary btn-block" href="index.html#pricing">Back to Sprint30</a>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var token = new URLSearchParams(window.location.search).get("token");
+  if (token && /^[0-9a-f]{32,128}$/i.test(token)) {
+    document.getElementById("ok").hidden = false;
+    var dash = "dashboard.html?token=" + encodeURIComponent(token);
+    document.getElementById("dash-link").href = dash;
+    var box = document.getElementById("token-box");
+    box.hidden = false;
+    box.textContent = "Your access token (keep it private): " + token;
+  } else {
+    document.getElementById("no-token").hidden = false;
+  }
+})();
+</script>
+</body>
+</html>
