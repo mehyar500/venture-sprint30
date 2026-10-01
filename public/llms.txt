@@ -6,7 +6,7 @@ Sprint30 is a 30-day challenge that builds a real side-income stream: pick a lan
 
 - / — landing page: challenge pitch, free-vs-paid tiers, $37 checkout
 - /privacy.html — privacy policy
-- /terms.html — terms of service, including the refund policy
+- /terms.html — terms of service (all sales final)
 - /dashboard.html — token-gated 30-day mission dashboard (noindex)
 - /success.html — post-Stripe confirmation (noindex)
 
