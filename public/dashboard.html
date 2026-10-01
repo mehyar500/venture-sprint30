@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<!-- TRACKING:GA4-GTM -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sprint30 — My dashboard</title>
 <meta name="robots" content="noindex">
@@ -142,7 +143,7 @@ footer a:hover{color:var(--text)}
     }),
     fetch("assets/missions.json").then(function (r) { return r.json(); })
   ]).then(function (res) {
-    var st = res[0], missions = res[1];
+    var st = res[0], missions = res[1].missions || res[1];
     state.day = st.day; state.progress = st.progress || {}; state.missions = missions;
     loading.hidden = true;
     document.getElementById("dash").hidden = false;

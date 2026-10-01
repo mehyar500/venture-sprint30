@@ -1,0 +1,26 @@
+# Sprint30
+
+Sprint30 is a 30-day challenge that builds a real side-income stream: pick a lane, ship an offer, and land your first customers. One specific mission a day, delivered to a token-gated dashboard; days 1–3 are free, the full 30 days cost $37 one-time.
+
+## Key pages
+
+- / — landing page: challenge pitch, free-vs-paid tiers, $37 checkout
+- /privacy.html — privacy policy
+- /terms.html — terms of service, including the refund policy
+- /dashboard.html — token-gated 30-day mission dashboard (noindex)
+- /success.html — post-Stripe confirmation (noindex)
+
+## API
+
+- POST /api/sprint30/checkout — creates the $37 Stripe checkout session.
+- GET /api/sprint30/status?token= — token-gated dashboard status (current day, progress).
+- POST /api/sprint30/progress — { token, day, done } → records mission completion.
+- GET /api/sprint30/unsubscribe?token= — one-click unsubscribe, honored immediately.
+
+## Compliance
+
+A guided challenge, not a business-in-a-box. No income promises: missions teach a process (pick a lane, ship an offer, land customers); results depend on the participant's effort. No follower, revenue, or employment claims.
+
+## Pricing
+
+$37 one-time for the full 30-day challenge, via the centralized https://mehyar.us/api/pay/checkout. Days 1–3 free.

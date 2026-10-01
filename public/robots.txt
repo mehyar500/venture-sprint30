@@ -3,3 +3,4 @@ Allow: /$
 Disallow: /dashboard.html
 Disallow: /success.html
 Disallow: /api/
+Sitemap: https://sprint30.mehyar.us/sitemap.xml
