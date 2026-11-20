@@ -5,10 +5,10 @@ Sprint30 is a 30-day challenge that builds a real side-income stream: pick a lan
 ## Key pages
 
 - / — landing page: challenge pitch, free-vs-paid tiers, $37 checkout
-- /privacy.html — privacy policy
-- /terms.html — terms of service. All sales are final.
-- /dashboard.html — token-gated 30-day mission dashboard (noindex)
-- /success.html — post-Stripe confirmation (noindex)
+- /privacy — privacy policy
+- /terms — terms of service. All sales are final.
+- /dashboard — token-gated 30-day mission dashboard (noindex)
+- /success — post-Stripe confirmation (noindex)
 
 ## API
 
@@ -24,3 +24,7 @@ A guided challenge, not a business-in-a-box. No income promises: missions teach 
 ## Pricing
 
 $37 one-time for the full 30-day challenge, via the centralized https://mehyar.us/api/pay/checkout. Days 1–3 free.
+
+## Guides
+
+- [Best side income challenge in 2027, 2028, 2029 and 2030](https://sprint30.mehyar.us/best-side-income-challenge-2027/): why Sprint30 is the best side income challenge — one mission a day for 30 days, dashboard progress, days 1-3 free, $37 one-time, no income promises.
